@@ -8,7 +8,7 @@
         # Ihre Lösung hier:
   # 1. Docker-Image bauen
 steps:  
-name: "gcr.io/cloud-builders/docker"
+-name: "gcr.io/cloud-builders/docker"
 args:
 [
 "build",
@@ -26,7 +26,7 @@ args:
         # Ihre Lösung hier:
 
    # 2. Image in Artifact Registry pushen
-name: "gcr.io/cloud-builders/docker"
+-name: "gcr.io/cloud-builders/docker"
 args:
 [
 "push",
@@ -47,7 +47,7 @@ args:
         # Ihre Lösung hier:
 
  # 3. Deployment nach Cloud Run
-name: "gcr.io/cloud-builders/gcloud"
+-name: "gcr.io/cloud-builders/gcloud"
 args:
 [
 "run",
