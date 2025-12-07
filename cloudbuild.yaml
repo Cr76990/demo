@@ -6,13 +6,13 @@
         # - Der Build-Context ist im './flask-app' Verzeichnis
         # 
         # Ihre Lösung hier:
-  # 1. Docker-Image bauen
 steps:
+# 1. Docker-Image bauen
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - 'build'
     - '-t'
-    - 'us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/transcoder-app:${COMMIT_SHA}'
     - './flask-app'
 
   # 2. Docker-Image in Google Container Registry pushen
@@ -25,10 +25,11 @@ steps:
 
    # 2. Image in Artifact Registry pushen
 
+# 2. Docker-Image pushen
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - 'push'
-    - 'us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/transcoder-app:${COMMIT_SHA}'
 
   # 3. Deployment auf Cloud Run
         # TODO: Fügen Sie die notwendigen Argumente für das Cloud Run Deployment hinzu
@@ -43,23 +44,24 @@ steps:
         #
         # Ihre Lösung hier:
 
- # 3. Deployment nach Cloud Run
+# 3. Cloud Run Deploy
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args:
-  - 'run'
-  - 'deploy'
-  - 'transcoder-app'
-  - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
-  - '--region=$_REGION'
-  - '--platform=managed'
-  - '--allow-unauthenticated'
-  - '--set-env-vars=BUCKET_NAME=$BUCKET_NAME,PROJECT_ID=$PROJECT_ID,REGION=$_REGION'
+    - 'run'
+    - 'deploy'
+    - 'transcoder-app'
+    - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/transcoder-app:${COMMIT_SHA}'
+    - '--region=${_REGION}'      
+    - '--platform=managed'
+    - '--allow-unauthenticated'
+    - '--set-env-vars=BUCKET_NAME=${_BUCKET_NAME},PROJECT_ID=$PROJECT_ID,REGION=${_REGION}'
 
 # TODO: Konfigurieren Sie die Build-Optionen
   # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
 options:
-    logging: CLOUD_LOGGING_ONLY
+  logging: CLOUD_LOGGING_ONLY
+  timeout: '10m'    # 10 Minuten Timeout hinzufügen
 
 # TODO: Definieren Sie die Substitution-Variablen für die Umgebungsvariablen Region, Bucket-Name und Artifact Registry Repository
   # Hinweise:
@@ -69,7 +71,7 @@ options:
   #
   # Ihre Lösung hier:
 substitutions:
-    -REGION: 'us-central1'
-    -BUCKET_NAME: 'mohsen-demo-bucket-12345'
-    -REPO_NAME: 'transcoder-repo'
+  _REGION: 'us-central1'
+  _BUCKET_NAME: 'mohsen-demo-bucket-12345'
+  _REPO_NAME: 'transcoder-repo'
 # TODO: Setzen Sie ein Timeout von 10 Minuten für den gesamten Build
