@@ -53,7 +53,7 @@ steps:
 # TODO: Konfigurieren Sie die Build-Optionen
   # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
 
- # options:
+    options:
     logging: CLOUD_LOGGING_ONLY
 
 # TODO: Definieren Sie die Substitution-Variablen für die Umgebungsvariablen Region, Bucket-Name und Artifact Registry Repository
@@ -64,7 +64,7 @@ steps:
   #
   # Ihre Lösung hier:
 
-# substitutions:
+    substitutions:
   _  REGION: 'us-central1'
   _  BUCKET_NAME: 'mohsen-demo-bucket-12345'
   _  REPO_NAME: 'transcoder-repo'
