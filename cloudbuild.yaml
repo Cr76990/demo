@@ -7,15 +7,13 @@
         # 
         # Ihre Lösung hier:
   # 1. Docker-Image bauen
-steps:  
--name: "gcr.io/cloud-builders/docker"
-args:
-[
-"build",
-"-t",
-"${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/app-image",
-"./flask-app"
-]
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '-t'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
+    - './flask-app'
 
   # 2. Docker-Image in Google Container Registry pushen
         # TODO: Fügen Sie die notwendigen Argumente für den Docker-Push hinzu
@@ -26,12 +24,11 @@ args:
         # Ihre Lösung hier:
 
    # 2. Image in Artifact Registry pushen
--name: "gcr.io/cloud-builders/docker"
-args:
-[
-"push",
-"${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/app-image"
-]
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'push'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
 
   # 3. Deployment auf Cloud Run
         # TODO: Fügen Sie die notwendigen Argumente für das Cloud Run Deployment hinzu
@@ -47,19 +44,18 @@ args:
         # Ihre Lösung hier:
 
  # 3. Deployment nach Cloud Run
--name: "gcr.io/cloud-builders/gcloud"
-args:
-[
-"run",
-"deploy",
-"transcoder-service",
-"--image=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/app-image",
-"--region=${_REGION}",
-"--platform=managed",
-"--allow-unauthenticated",
-"--set-env-vars",
-"BUCKET=${_BUCKET_NAME}"
-]
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'transcoder-app'
+  - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/[Artifact Registry Repository]/[Image Name]:$COMMIT_SHA'
+  - '--region=$_REGION'
+  - '--platform=managed'
+  - '--allow-unauthenticated'
+  - '--set-env-vars=BUCKET_NAME=$BUCKET_NAME,PROJECT_ID=$PROJECT_ID,REGION=$_REGION'
+
 # TODO: Konfigurieren Sie die Build-Optionen
   # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
 options:
@@ -73,7 +69,6 @@ options:
   # - Artifact Registry Repository: 'transcoder-repo'
   #
   # Ihre Lösung hier:
-
 substitutions:
     _REGION: 'us-central1'
     _BUCKET_NAME: 'mohsen-demo-bucket-12345'
