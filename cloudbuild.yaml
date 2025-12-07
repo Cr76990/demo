@@ -61,7 +61,6 @@ steps:
   # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
 options:
   logging: CLOUD_LOGGING_ONLY
-  timeout: '10m'    # 10 Minuten Timeout hinzufügen
 
 # TODO: Definieren Sie die Substitution-Variablen für die Umgebungsvariablen Region, Bucket-Name und Artifact Registry Repository
   # Hinweise:
@@ -75,3 +74,4 @@ substitutions:
   _BUCKET_NAME: 'mohsen-demo-bucket-12345'
   _REPO_NAME: 'transcoder-repo'
 # TODO: Setzen Sie ein Timeout von 10 Minuten für den gesamten Build
+timeout: '600s'  # Hier, nicht in options!
