@@ -60,7 +60,6 @@ steps:
   # Hinweis: Setzen Sie das Logging auf 'CLOUD_LOGGING_ONLY'
 options:
     logging: CLOUD_LOGGING_ONLY
-    timeout: "600s" # 10 Minuten
 
 # TODO: Definieren Sie die Substitution-Variablen für die Umgebungsvariablen Region, Bucket-Name und Artifact Registry Repository
   # Hinweise:
