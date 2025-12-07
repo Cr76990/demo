@@ -66,5 +66,5 @@ options:
 substitutions:
     _REGION: 'us-central1'
     _BUCKET_NAME: 'mohsen-demo-bucket-12345'
-    _REPO_NAME: 'Docker repository für Transcoder App'
+    _REPO_NAME: 'transcoder-repo'
 # TODO: Setzen Sie ein Timeout von 10 Minuten für den gesamten Build
